@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* Default image state */
+.hero-image {
+  transform: scale(1);
+  transition: transform 6s linear;
+}
+
+/* Animate active slide only */
+.swiper-slide-active .hero-image {
+  transform: scale(1.08);
+}
