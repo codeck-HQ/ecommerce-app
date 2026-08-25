@@ -64,7 +64,7 @@ const products = [
     id: 9,
     name: "Sunscreen SPF 50",
     price: 24,
-    image: "/products_img/beauty/skincare/sunscreen_spf_50.jpg",
+    image: "/products_img/beauty/skincare/sunscreen_SPF_50.jpg", 
     category: "beauty",
     subcategory: "skincare",
   },
@@ -188,6 +188,134 @@ const products = [
     category: "electronics",
     subcategory: "phones",
   },
+
+    // Electronics — Laptops
+  {
+    id: 24,
+    name: "MacBook Pro 16",
+    price: 2499,
+    image: "/products_img/electronics/laptops/macbook_pro_16.jpg",
+    category: "electronics",
+    subcategory: "laptops",
+  },
+
+  {
+    id: 25,
+    name: "Dell XPS 15",
+    price: 1899,
+    image: "/products_img/electronics/laptops/dell_xps_15.jpg",
+    category: "electronics",
+    subcategory: "laptops",
+  },
+
+  {
+    id: 26,
+    name: "HP Spectre x360",
+    price: 1699,
+    image: "/products_img/electronics/laptops/hp_spectre_x360.jpg",
+    category: "electronics",
+    subcategory: "laptops",
+  },
+
+  {
+    id: 27,
+    name: "Lenovo ThinkPad X1 Carbon",
+    price: 1799,
+    image: "/products_img/electronics/laptops/lenovo_thinkpad_x1_carbon.jpg",
+    category: "electronics",
+    subcategory: "laptops",
+  },
+
+  {
+    id: 28,
+    name: "ASUS ROG Zephyrus G16",
+    price: 1999,
+    image: "/products_img/electronics/laptops/asus_rog_zephyrus_g16.jpg",
+    category: "electronics",
+    subcategory: "laptops",
+  },
+
+  {
+    id: 29,
+    name: "Microsoft Surface Laptop",
+    price: 1499,
+    image: "/products_img/electronics/laptops/microsoft_surface_laptop.jpg",
+    category: "electronics",
+    subcategory: "laptops",
+  },
+
+  {
+    id: 30,
+    name: "Acer Swift Go 14",
+    price: 899,
+    image: "/products_img/electronics/laptops/acer_swift_go_14.jpg",
+    category: "electronics",
+    subcategory: "laptops",
+  },
+    // Electronics — Audio
+  {
+    id: 31,
+    name: "Sony WH-1000XM5",
+    price: 399,
+    image: "/products_img/electronics/audio/sony_wh_1000xm5.jpg",
+    category: "electronics",
+    subcategory: "audio",
+  },
+
+  {
+    id: 32,
+    name: "Apple AirPods Max",
+    price: 549,
+    image: "/products_img/electronics/audio/apple_airpods_max.jpg",
+    category: "electronics",
+    subcategory: "audio",
+  },
+
+  {
+    id: 33,
+    name: "Bose QuietComfort Ultra",
+    price: 429,
+    image: "/products_img/electronics/audio/bose_quietcomfort_ultra.jpg",
+    category: "electronics",
+    subcategory: "audio",
+  },
+
+  {
+    id: 34,
+    name: "Sennheiser Momentum 4",
+    price: 379,
+    image: "/products_img/electronics/audio/sennheiser_momentum_4.jpg",
+    category: "electronics",
+    subcategory: "audio",
+  },
+
+  {
+    id: 35,
+    name: "JBL Live 770NC",
+    price: 199,
+    image: "/products_img/electronics/audio/jbl_live_770nc.jpg",
+    category: "electronics",
+    subcategory: "audio",
+  },
+
+  {
+    id: 36,
+    name: "Beats Studio Pro",
+    price: 349,
+    image: "/products_img/electronics/audio/beats_studio_pro.jpg",
+    category: "electronics",
+    subcategory: "audio",
+  },
+
+  {
+    id: 37,
+    name: "Sony WF-1000XM5",
+    price: 299,
+    image: "/products_img/electronics/audio/sony_wf_1000xm5.jpg",
+    category: "electronics",
+    subcategory: "audio",
+  },
+  
 ]
 
 export default products

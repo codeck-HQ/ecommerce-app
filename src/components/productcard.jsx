@@ -7,7 +7,7 @@ function ProductCard({ product, addToCart }) {
         group
         relative
         bg-white
-        rounded-3xl
+        rounded-2xl md:rounded-3xl
         overflow-hidden
         shadow-md
         border border-gray-100
@@ -21,13 +21,13 @@ function ProductCard({ product, addToCart }) {
       <div
         className="
           absolute
-          top-4
-          left-4
+          top-2 left-2
+          md:top-4 md:left-4
           bg-red-500
           text-white
-          text-xs
+          text-[10px] md:text-xs
           font-semibold
-          px-3
+          px-2 md:px-3
           py-1
           rounded-full
           z-10
@@ -40,10 +40,10 @@ function ProductCard({ product, addToCart }) {
       <button
         className="
           absolute
-          top-4
-          right-4
-          w-10
-          h-10
+          top-2 right-2
+          md:top-4 md:right-4
+          w-8 h-8
+          md:w-10 md:h-10
           rounded-full
           bg-white/90
           backdrop-blur-md
@@ -54,6 +54,7 @@ function ProductCard({ product, addToCart }) {
           z-10
           hover:scale-110
           transition
+          text-xs md:text-base
         "
       >
         ❤️
@@ -67,7 +68,9 @@ function ProductCard({ product, addToCart }) {
             alt={product.name}
             className="
               w-full
-              h-56
+              h-40
+              sm:h-48
+              md:h-56
               object-cover
               transition-transform
               duration-500
@@ -88,7 +91,7 @@ function ProductCard({ product, addToCart }) {
             "
           ></div>
 
-          {/* QUICK PREVIEW */}
+          {/* VIEW DETAILS */}
           <div
             className="
               hidden md:block
@@ -117,42 +120,45 @@ function ProductCard({ product, addToCart }) {
       </Link>
 
       {/* CONTENT */}
-      <div className="p-5">
-        {/* Product name */}
+      <div className="p-3 md:p-5">
+
+        {/* PRODUCT NAME */}
         <Link to={`/products/${product.id}`}>
           <h2
             className="
-              text-lg
+              text-sm
+              md:text-lg
               font-semibold
               text-gray-900
               hover:text-yellow-500
               transition
+              line-clamp-2
             "
           >
             {product.name}
           </h2>
         </Link>
 
-        {/* Rating */}
-        <div className="flex items-center gap-1 mt-2">
-          <span>⭐</span>
-          <span>⭐</span>
-          <span>⭐</span>
-          <span>⭐</span>
-          <span>⭐</span>
+        {/* RATING */}
+        <div className="flex items-center gap-0.5 mt-2">
+          <span className="text-xs md:text-base">⭐</span>
+          <span className="text-xs md:text-base">⭐</span>
+          <span className="text-xs md:text-base">⭐</span>
+          <span className="text-xs md:text-base">⭐</span>
+          <span className="text-xs md:text-base">⭐</span>
 
-          <span className="text-sm text-gray-500 ml-2">
+          <span className="text-[10px] md:text-sm text-gray-500 ml-1 md:ml-2">
             (4.9)
           </span>
         </div>
 
-        {/* Price */}
-        <div className="flex items-center gap-3 mt-3">
-          <p className="text-2xl font-bold text-black">
+        {/* PRICE */}
+        <div className="flex items-center gap-2 mt-2 md:mt-3">
+          <p className="text-lg md:text-2xl font-bold text-black">
             ${product.price}
           </p>
 
-          <span className="text-gray-400 line-through">
+          <span className="text-xs md:text-sm text-gray-400 line-through">
             ${Math.round(product.price * 1.3)}
           </span>
         </div>
@@ -161,12 +167,13 @@ function ProductCard({ product, addToCart }) {
         <button
           onClick={() => addToCart(product)}
           className="
-            mt-5
+            mt-3 md:mt-5
             w-full
-            py-3
+            py-2 md:py-3
             rounded-full
             bg-black
             text-white
+            text-xs md:text-sm
             font-medium
             hover:bg-gray-800
             transition
