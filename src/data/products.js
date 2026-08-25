@@ -116,6 +116,78 @@ const products = [
     category: "beauty",
     subcategory: "skincare",
   },
+    // Electronics — Phones
+  {
+    id: 16,
+    name: "iPhone 15 Pro",
+    price: 999,
+    image: "/products_img/electronics/phones/iphone_15_pro.png",
+    category: "electronics",
+    subcategory: "phones",
+  },
+
+  {
+    id: 17,
+    name: "Samsung Galaxy S25",
+    price: 899,
+    image: "/products_img/electronics/phones/samsung_galaxy_s25.jpg",
+    category: "electronics",
+    subcategory: "phones",
+  },
+
+  {
+    id: 18,
+    name: "Google Pixel 9",
+    price: 799,
+    image: "/products_img/electronics/phones/google_pixel_9.jpg",
+    category: "electronics",
+    subcategory: "phones",
+  },
+
+  {
+    id: 19,
+    name: "OnePlus 13",
+    price: 849,
+    image: "/products_img/electronics/phones/oneplus_13.jpg",
+    category: "electronics",
+    subcategory: "phones",
+  },
+
+  {
+    id: 20,
+    name: "Xiaomi 15",
+    price: 749,
+    image: "/products_img/electronics/phones/xiaomi_15.jpg",
+    category: "electronics",
+    subcategory: "phones",
+  },
+
+  {
+    id: 21,
+    name: "Nothing Phone 3",
+    price: 699,
+    image: "/products_img/electronics/phones/nothing_phone_3.jpg",
+    category: "electronics",
+    subcategory: "phones",
+  },
+
+  {
+    id: 22,
+    name: "Sony Xperia 1 VI",
+    price: 1099,
+    image: "/products_img/electronics/phones/sony_xperia_1_vi.jpg",
+    category: "electronics",
+    subcategory: "phones",
+  },
+
+    {
+    id: 23,
+    name: "iPhone 17 Pro",
+    price: 1800,
+    image: "/products_img/electronics/phones/iphone_17_pro.jpg",
+    category: "electronics",
+    subcategory: "phones",
+  },
 ]
 
 export default products

@@ -10,6 +10,7 @@ import MainLayout from "./layout/MainLayout"
 import Home from "./pages/Home"
 import ProductList from "./pages/ProductList"
 import Cart from "./pages/Cart"
+import ProductDetails from "./pages/Products/ProductDetails"
 
 import Electronics from "./pages/Products/Electronics"
 import Fashion from "./pages/Products/Fashion"
@@ -51,6 +52,9 @@ function App() {
 
           {/* Cart Page */}
           <Route path="/cart" element={<Cart />} />
+
+          {/* Product Details */}
+          <Route path="/products/:id" element={<ProductDetails />} />
         </Routes>
       </MainLayout>
     </CartProvider>

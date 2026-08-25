@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom"
+
 function ProductCard({ product, addToCart }) {
   return (
     <div
@@ -58,65 +60,78 @@ function ProductCard({ product, addToCart }) {
       </button>
 
       {/* IMAGE */}
-      <div className="relative overflow-hidden">
-        <img
-          src={product.image}
-          alt={product.name}
-          className="
-            w-full
-            h-56
-            object-cover
-            transition-transform
-            duration-500
-            group-hover:scale-110
-          "
-        />
+      <Link to={`/products/${product.id}`}>
+        <div className="relative overflow-hidden">
+          <img
+            src={product.image}
+            alt={product.name}
+            className="
+              w-full
+              h-56
+              object-cover
+              transition-transform
+              duration-500
+              group-hover:scale-110
+            "
+          />
 
-        {/* DARK OVERLAY */}
-        <div
-          className="
-            absolute
-            inset-0
-            bg-black/40
-            opacity-0
-            group-hover:opacity-100
-            transition-all
-            duration-300
-          "
-        ></div>
+          {/* DARK OVERLAY */}
+          <div
+            className="
+              absolute
+              inset-0
+              bg-black/40
+              opacity-0
+              group-hover:opacity-100
+              transition-all
+              duration-300
+            "
+          ></div>
 
-        {/* QUICK PREVIEW (desktop only) */}
-        <button
-          className="
-            hidden md:block
-            absolute
-            left-1/2
-            top-1/2
-            -translate-x-1/2
-            -translate-y-1/2
-            bg-white
-            text-black
-            px-5
-            py-3
-            rounded-full
-            font-medium
-            opacity-0
-            scale-90
-            group-hover:opacity-100
-            group-hover:scale-100
-            transition-all
-            duration-300
-          "
-        >
-          Quick Preview
-        </button>
-      </div>
+          {/* QUICK PREVIEW */}
+          <div
+            className="
+              hidden md:block
+              absolute
+              left-1/2
+              top-1/2
+              -translate-x-1/2
+              -translate-y-1/2
+              bg-white
+              text-black
+              px-5
+              py-3
+              rounded-full
+              font-medium
+              opacity-0
+              scale-90
+              group-hover:opacity-100
+              group-hover:scale-100
+              transition-all
+              duration-300
+            "
+          >
+            View Details
+          </div>
+        </div>
+      </Link>
 
       {/* CONTENT */}
       <div className="p-5">
-        <h2 className="text-lg font-semibold text-gray-900">
-          {product.name}
-        </h2>
+        {/* Product name */}
+        <Link to={`/products/${product.id}`}>
+          <h2
+            className="
+              text-lg
+              font-semibold
+              text-gray-900
+              hover:text-yellow-500
+              transition
+            "
+          >
+            {product.name}
+          </h2>
+        </Link>
 
         {/* Rating */}
         <div className="flex items-center gap-1 mt-2">
