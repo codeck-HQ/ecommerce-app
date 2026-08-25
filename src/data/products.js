@@ -315,6 +315,70 @@ const products = [
     category: "electronics",
     subcategory: "audio",
   },
+
+    // Electronics — Cameras
+  {
+    id: 38,
+    name: "Canon EOS R6 Mark II",
+    price: 2499,
+    image: "/products_img/electronics/cameras/canon_eos_r6_mark_ii.jpg",
+    category: "electronics",
+    subcategory: "cameras",
+  },
+
+  {
+    id: 39,
+    name: "Sony Alpha A7 IV",
+    price: 2498,
+    image: "/products_img/electronics/cameras/sony_alpha_a7_iv.jpg",
+    category: "electronics",
+    subcategory: "cameras",
+  },
+
+  {
+    id: 40,
+    name: "Nikon Z6 III",
+    price: 2499,
+    image: "/products_img/electronics/cameras/nikon_z6_iii.jpg",
+    category: "electronics",
+    subcategory: "cameras",
+  },
+
+  {
+    id: 41,
+    name: "Fujifilm X-T5",
+    price: 1699,
+    image: "/products_img/electronics/cameras/fujifilm_x_t5.jpg",
+    category: "electronics",
+    subcategory: "cameras",
+  },
+
+  {
+    id: 42,
+    name: "Panasonic Lumix S5 II",
+    price: 1999,
+    image: "/products_img/electronics/cameras/panasonic_lumix_s5_ii.jpg",
+    category: "electronics",
+    subcategory: "cameras",
+  },
+
+  {
+    id: 43,
+    name: "GoPro HERO13 Black",
+    price: 399,
+    image: "/products_img/electronics/cameras/gopro_hero13_black.jpg",
+    category: "electronics",
+    subcategory: "cameras",
+  },
+
+  {
+    id: 44,
+    name: "DJI Osmo Pocket 3",
+    price: 519,
+    image: "/products_img/electronics/cameras/dji_osmo_pocket_3.jpg",
+    category: "electronics",
+    subcategory: "cameras",
+  },
   
 ]
 

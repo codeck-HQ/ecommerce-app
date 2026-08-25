@@ -39,6 +39,7 @@ const subcategories = {
     "audio",
     "wearables",
     "accessories",
+    "cameras"
   ],
   fashion: [
     "all",
