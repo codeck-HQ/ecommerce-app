@@ -1,5 +1,11 @@
 import { useContext } from "react"
-import { Link, useParams } from "react-router-dom"
+import ProductCard from "../../components/productcard"
+import {
+  Link,
+  useParams,
+  useLocation,
+  useNavigate,
+} from "react-router-dom"
 import { ArrowLeft, ShoppingCart, Star } from "lucide-react"
 
 import { CartContext } from "../../context/CartContext"
@@ -8,12 +14,31 @@ import products from "../../data/products"
 function ProductDetails() {
   const { id } = useParams()
   const { addToCart } = useContext(CartContext)
+  const location = useLocation()
+const navigate = useNavigate()
+
+const handleBack = () => {
+  if (location.state?.from) {
+    navigate(location.state.from)
+  } else {
+    navigate("/ProductList")
+  }
+}
 
   // Find the product that matches the ID in the URL
   const product = products.find(
     (item) => item.id === Number(id)
   )
 
+  const relatedProducts = products
+  .filter(
+    (item) =>
+      item.id !== product.id &&
+      item.category === product.category &&
+      item.subcategory === product.subcategory
+  )
+  .slice(0, 4)
+  
   // Handle invalid product IDs
   if (!product) {
     return (
@@ -56,21 +81,21 @@ function ProductDetails() {
       <div className="max-w-7xl mx-auto px-4 md:px-6">
 
         {/* Back button */}
-        <Link
-          to="/ProductList"
-          className="
-            inline-flex
-            items-center
-            gap-2
-            text-gray-500
-            hover:text-black
-            transition
-            mb-8
-          "
-        >
-          <ArrowLeft size={18} />
-          Back to Products
-        </Link>
+<button
+  onClick={handleBack}
+  className="
+    inline-flex
+    items-center
+    gap-2
+    text-gray-500
+    hover:text-black
+    transition
+    mb-8
+  "
+>
+  <ArrowLeft size={18} />
+  Back to Products
+</button>
 
         {/* Product details */}
         <div
@@ -88,9 +113,8 @@ function ProductDetails() {
           <div className="bg-gray-100 p-6 md:p-10">
             <div
               className="
-                h-full
-                min-h-[400px]
-                md:min-h-[550px]
+                h-[350px]
+                md:h-[450px]
                 rounded-[32px]
                 overflow-hidden
               "
@@ -193,6 +217,32 @@ function ProductDetails() {
           </div>
         </div>
       </div>
+
+      {/* RELATED PRODUCTS */}
+      {relatedProducts.length > 0 && (
+        <div className="mt-16">
+          <div className="mb-6">
+            <p className="text-sm uppercase tracking-[0.2em] text-yellow-500 font-semibold">
+              You may also like
+            </p>
+
+            <h2 className="text-3xl md:text-4xl font-bold mt-2">
+              Related Products
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+            {relatedProducts.map((relatedProduct) => (
+              <ProductCard
+                key={relatedProduct.id}
+                product={relatedProduct}
+                addToCart={addToCart}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+
     </section>
   )
 }

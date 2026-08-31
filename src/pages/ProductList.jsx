@@ -1,5 +1,5 @@
 import { useMemo, useState, useContext } from "react"
-import { Link } from "react-router-dom"
+import { Link, useSearchParams } from "react-router-dom"
 
 import {
   ArrowUpDown,
@@ -79,11 +79,13 @@ function ProductList() {
   } = useContext(SearchContext)
 
   // Filters
-  const [activeCategory, setActiveCategory] =
-    useState("all")
+const [searchParams, setSearchParams] = useSearchParams()
 
-  const [activeSubcategory, setActiveSubcategory] =
-    useState("all")
+const activeCategory =
+  searchParams.get("category") || "all"
+
+const activeSubcategory =
+  searchParams.get("subcategory") || "all"
 
   const [sortBy, setSortBy] =
     useState("featured")
@@ -246,10 +248,16 @@ if (searchTerm.trim()) {
           return (
             <button
               key={category}
-              onClick={() => {
-                setActiveCategory(category)
-                setActiveSubcategory("all")
-              }}
+onClick={() => {
+  if (category === "all") {
+    setSearchParams({})
+  } else {
+    setSearchParams({
+      category,
+      subcategory: "all",
+    })
+  }
+}}
               className={`px-5 py-2.5 rounded-full border ${
                 isActive
                   ? "bg-black text-white border-black"
@@ -273,7 +281,12 @@ if (searchTerm.trim()) {
             return (
               <button
                 key={sub}
-                onClick={() => setActiveSubcategory(sub)}
+                onClick={() => {
+  setSearchParams({
+    category: activeCategory,
+    subcategory: sub,
+  })
+}}
                 className={`px-4 py-2 rounded-full border ${
                   isActive
                     ? "bg-yellow-500 text-black border-yellow-500"
@@ -307,10 +320,9 @@ if (searchTerm.trim()) {
 
             <button
               onClick={() => {
-                setActiveCategory("all")
-                setActiveSubcategory("all")
-                setSearchTerm("")
-                setSortBy("featured")
+setSearchParams({})
+setSearchTerm("")
+setSortBy("featured")
               }}
               className="mt-6 px-6 py-3 rounded-full bg-black text-white"
             >

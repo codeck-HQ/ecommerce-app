@@ -1,6 +1,15 @@
-import { Link } from "react-router-dom"
+import { useContext } from "react"
+import { Link, useLocation } from "react-router-dom"
+
+import { WishlistContext } from "../context/WishlistContext"
 
 function ProductCard({ product, addToCart }) {
+  const location = useLocation()
+  const {
+  toggleWishlist,
+  isWishlisted,
+} = useContext(WishlistContext)
+
   return (
     <div
       className="
@@ -38,6 +47,7 @@ function ProductCard({ product, addToCart }) {
 
       {/* WISHLIST BUTTON */}
       <button
+        onClick={() => toggleWishlist(product)}
         className="
           absolute
           top-2 right-2
@@ -57,11 +67,16 @@ function ProductCard({ product, addToCart }) {
           text-xs md:text-base
         "
       >
-        ❤️
+        {isWishlisted(product.id) ? "❤️" : "♡"}
       </button>
 
       {/* IMAGE */}
-      <Link to={`/products/${product.id}`}>
+      <Link
+        to={`/products/${product.id}`}
+        state={{
+          from: location.pathname + location.search,
+        }}
+      >
         <div className="relative overflow-hidden">
           <img
             src={product.image}
@@ -123,7 +138,12 @@ function ProductCard({ product, addToCart }) {
       <div className="p-3 md:p-5">
 
         {/* PRODUCT NAME */}
-        <Link to={`/products/${product.id}`}>
+        <Link
+          to={`/products/${product.id}`}
+          state={{
+            from: location.pathname + location.search,
+          }}
+        >
           <h2
             className="
               text-sm

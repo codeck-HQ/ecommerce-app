@@ -18,6 +18,9 @@ import Furniture from "./pages/Products/Furniture"
 import Gaming from "./pages/Products/Gaming"
 import Beauty from "./pages/Products/Beauty"
 
+import WishlistNotification from "./components/WishlistNotification"
+import Wishlist from "./pages/Wishlist"
+
 function App() {
   // Initialize animation library once when app loads
   useEffect(() => {
@@ -55,7 +58,9 @@ function App() {
 
           {/* Product Details */}
           <Route path="/products/:id" element={<ProductDetails />} />
+          <Route path="/wishlist" element={<Wishlist />} />
         </Routes>
+         <WishlistNotification />
       </MainLayout>
     </CartProvider>
   )
