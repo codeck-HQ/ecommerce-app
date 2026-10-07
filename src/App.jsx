@@ -20,6 +20,7 @@ import Beauty from "./pages/Products/Beauty"
 
 import WishlistNotification from "./components/WishlistNotification"
 import Wishlist from "./pages/Wishlist"
+import Checkout from "./pages/Checkout"
 
 function App() {
   // Initialize animation library once when app loads
@@ -55,6 +56,7 @@ function App() {
 
           {/* Cart Page */}
           <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout" element={<Checkout />} />
 
           {/* Product Details */}
           <Route path="/products/:id" element={<ProductDetails />} />

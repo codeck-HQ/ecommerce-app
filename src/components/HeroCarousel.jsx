@@ -57,6 +57,7 @@ function HeroCarousel() {
               <img
                 src={slide.image}
                 alt={`Hero Slide ${index + 1}`}
+                decoding="async"
                 className="hero-image w-full h-full object-center object-cover"
               />
 
