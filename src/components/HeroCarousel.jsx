@@ -6,9 +6,9 @@ import "swiper/css"
 import "swiper/css/navigation"
 import "swiper/css/pagination"
 
-import hero1 from "../assets/images/hero/midnight luxe2.png"
-import hero2 from "../assets/images/hero/neon velocity2.png"
-import hero3 from "../assets/images/hero/modern elegance2.png"
+import hero1 from "../assets/images/hero/Midnight Luxe2.png"
+import hero2 from "../assets/images/hero/Neon Velocity2.png"
+import hero3 from "../assets/images/hero/Modern Elegance2.png"
 
 /*
   Array of slide images.
