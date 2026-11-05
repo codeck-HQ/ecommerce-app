@@ -21,6 +21,7 @@ import Beauty from "./pages/Products/Beauty"
 import WishlistNotification from "./components/WishlistNotification"
 import Wishlist from "./pages/Wishlist"
 import Checkout from "./pages/Checkout"
+import OrderConfirmation from "./pages/OrderConfirmation";
 
 function App() {
   // Initialize animation library once when app loads
@@ -54,18 +55,19 @@ function App() {
           <Route path="/products/gaming" element={<Gaming />} />
           <Route path="/products/beauty" element={<Beauty />} />
 
-          {/* Cart Page */}
+          {/* Cart & Checkout */}
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
-
+          <Route path="/order-confirmation" element={<OrderConfirmation />} />
+          
           {/* Product Details */}
           <Route path="/products/:id" element={<ProductDetails />} />
           <Route path="/wishlist" element={<Wishlist />} />
         </Routes>
-         <WishlistNotification />
+        <WishlistNotification />
       </MainLayout>
     </CartProvider>
-  )
+  );
 }
 
 export default App

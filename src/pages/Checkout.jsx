@@ -1,5 +1,5 @@
 import { useContext, useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
   MapPin,
@@ -13,7 +13,8 @@ import {
 import { CartContext } from "../context/CartContext"
 
 function Checkout() {
-  const { cartItems } = useContext(CartContext)
+const { cartItems, clearCart } = useContext(CartContext);
+const navigate = useNavigate();
 
   const [deliveryMethod, setDeliveryMethod] = useState("standard")
   const [paymentMethod, setPaymentMethod] = useState("card")
@@ -29,7 +30,6 @@ function Checkout() {
   })
 
   const [errors, setErrors] = useState({})
-  const [formStatus, setFormStatus] = useState("")
 
   const subtotal = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
@@ -64,10 +64,6 @@ function Checkout() {
         ...prev,
         [name]: "",
       }))
-    }
-
-    if (formStatus) {
-      setFormStatus("")
     }
   }
 
@@ -116,57 +112,67 @@ function Checkout() {
   }
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    const newErrors = validateForm()
+    if (cartItems.length === 0) {
+      navigate("/cart");
+      return;
+    }
+    const newErrors = validateForm();
 
     if (Object.keys(newErrors).length > 0) {
-      const firstInvalidField = Object.keys(newErrors)[0]
+      const firstInvalidField = Object.keys(newErrors)[0];
 
       setTimeout(() => {
-        const field = document.querySelector(`[name="${firstInvalidField}"]`)
+        const field = document.querySelector(`[name="${firstInvalidField}"]`);
 
         if (field) {
-          field.focus()
+          field.focus();
           field.scrollIntoView({
             behavior: "smooth",
             block: "center",
-          })
+          });
         }
-      }, 0)
+      }, 0);
 
-      return
+      return;
     }
 
-    setFormStatus("Checkout details validated successfully.")
-
-    console.log({
-      customer: formData,
+    // CREATE DEMO ORDER
+    const order = {
+      reference: `DEMO-${Date.now().toString(36).toUpperCase()}`,
+      customer: { ...formData },
+      items: cartItems.map((item) => ({ ...item })),
       deliveryMethod,
       paymentMethod,
-      cartItems,
       subtotal,
       shipping,
       total,
-    })
-  }
+    };
+
+    // NAVIGATE TO CONFIRMATION
+    navigate("/order-confirmation", { state: { order } });
+
+    // CLEAR CART AFTER CAPTURING ORDER
+    clearCart();
+  };
 
   return (
     <section className="min-h-screen bg-gray-50 py-8 md:py-12">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
-
         {/* HEADER */}
         <div className="mb-8">
-          <Link to="/cart" className="inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-black transition mb-5">
+          <Link
+            to="/cart"
+            className="inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-black transition mb-5"
+          >
             <ArrowLeft size={18} />
             Back to Cart
           </Link>
 
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-5">
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold">
-                Checkout
-              </h1>
+              <h1 className="text-3xl md:text-4xl font-bold">Checkout</h1>
 
               <p className="text-gray-500 mt-2">
                 Complete your details and review your order.
@@ -183,11 +189,13 @@ function Checkout() {
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="grid lg:grid-cols-[1fr_420px] gap-8 items-start" noValidate>
-
+        <form
+          onSubmit={handleSubmit}
+          className="grid lg:grid-cols-[1fr_420px] gap-8 items-start"
+          noValidate
+        >
           {/* LEFT SIDE */}
           <div className="space-y-6">
-
             {/* CONTACT INFORMATION */}
             <div className="bg-white rounded-[28px] border border-gray-100 shadow-sm p-5 md:p-7">
               <div className="flex items-start gap-4 mb-6">
@@ -201,7 +209,8 @@ function Checkout() {
                   </h2>
 
                   <p className="text-sm text-gray-500 mt-1">
-                    We'll use these details to keep you updated about your order.
+                    We'll use these details to keep you updated about your
+                    order.
                   </p>
                 </div>
               </div>
@@ -212,7 +221,15 @@ function Checkout() {
                     Full Name
                   </label>
 
-                  <input type="text" name="fullName" value={formData.fullName} onChange={handleChange} placeholder="John Doe" autoComplete="name" className={inputClass("fullName")} />
+                  <input
+                    type="text"
+                    name="fullName"
+                    value={formData.fullName}
+                    onChange={handleChange}
+                    placeholder="John Doe"
+                    autoComplete="name"
+                    className={inputClass("fullName")}
+                  />
 
                   {errors.fullName && (
                     <p className="text-sm text-red-500 mt-2">
@@ -226,12 +243,18 @@ function Checkout() {
                     Email Address
                   </label>
 
-                  <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="john@example.com" autoComplete="email" className={inputClass("email")} />
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="john@example.com"
+                    autoComplete="email"
+                    className={inputClass("email")}
+                  />
 
                   {errors.email && (
-                    <p className="text-sm text-red-500 mt-2">
-                      {errors.email}
-                    </p>
+                    <p className="text-sm text-red-500 mt-2">{errors.email}</p>
                   )}
                 </div>
 
@@ -240,12 +263,18 @@ function Checkout() {
                     Phone Number
                   </label>
 
-                  <input type="tel" name="phone" value={formData.phone} onChange={handleChange} placeholder="+234 800 000 0000" autoComplete="tel" className={inputClass("phone")} />
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    placeholder="+234 800 000 0000"
+                    autoComplete="tel"
+                    className={inputClass("phone")}
+                  />
 
                   {errors.phone && (
-                    <p className="text-sm text-red-500 mt-2">
-                      {errors.phone}
-                    </p>
+                    <p className="text-sm text-red-500 mt-2">{errors.phone}</p>
                   )}
                 </div>
               </div>
@@ -279,7 +308,15 @@ function Checkout() {
                     Street Address
                   </label>
 
-                  <input type="text" name="address" value={formData.address} onChange={handleChange} placeholder="123 Main Street" autoComplete="street-address" className={inputClass("address")} />
+                  <input
+                    type="text"
+                    name="address"
+                    value={formData.address}
+                    onChange={handleChange}
+                    placeholder="123 Main Street"
+                    autoComplete="street-address"
+                    className={inputClass("address")}
+                  />
 
                   {errors.address && (
                     <p className="text-sm text-red-500 mt-2">
@@ -293,12 +330,18 @@ function Checkout() {
                     City
                   </label>
 
-                  <input type="text" name="city" value={formData.city} onChange={handleChange} placeholder="City" autoComplete="address-level2" className={inputClass("city")} />
+                  <input
+                    type="text"
+                    name="city"
+                    value={formData.city}
+                    onChange={handleChange}
+                    placeholder="City"
+                    autoComplete="address-level2"
+                    className={inputClass("city")}
+                  />
 
                   {errors.city && (
-                    <p className="text-sm text-red-500 mt-2">
-                      {errors.city}
-                    </p>
+                    <p className="text-sm text-red-500 mt-2">{errors.city}</p>
                   )}
                 </div>
 
@@ -307,12 +350,18 @@ function Checkout() {
                     State
                   </label>
 
-                  <input type="text" name="state" value={formData.state} onChange={handleChange} placeholder="State" autoComplete="address-level1" className={inputClass("state")} />
+                  <input
+                    type="text"
+                    name="state"
+                    value={formData.state}
+                    onChange={handleChange}
+                    placeholder="State"
+                    autoComplete="address-level1"
+                    className={inputClass("state")}
+                  />
 
                   {errors.state && (
-                    <p className="text-sm text-red-500 mt-2">
-                      {errors.state}
-                    </p>
+                    <p className="text-sm text-red-500 mt-2">{errors.state}</p>
                   )}
                 </div>
 
@@ -321,7 +370,15 @@ function Checkout() {
                     Postal Code
                   </label>
 
-                  <input type="text" name="postalCode" value={formData.postalCode} onChange={handleChange} placeholder="Postal code" autoComplete="postal-code" className={inputClass("postalCode")} />
+                  <input
+                    type="text"
+                    name="postalCode"
+                    value={formData.postalCode}
+                    onChange={handleChange}
+                    placeholder="Postal code"
+                    autoComplete="postal-code"
+                    className={inputClass("postalCode")}
+                  />
 
                   {errors.postalCode && (
                     <p className="text-sm text-red-500 mt-2">
@@ -355,7 +412,6 @@ function Checkout() {
               </div>
 
               <div className="grid md:grid-cols-2 gap-4">
-
                 {/* STANDARD DELIVERY */}
                 <label
                   className={`relative rounded-2xl border-2 p-5 cursor-pointer transition ${
@@ -364,7 +420,14 @@ function Checkout() {
                       : "border-gray-200 hover:border-gray-400"
                   }`}
                 >
-                  <input type="radio" name="deliveryMethod" value="standard" checked={deliveryMethod === "standard"} onChange={() => setDeliveryMethod("standard")} className="sr-only" />
+                  <input
+                    type="radio"
+                    name="deliveryMethod"
+                    value="standard"
+                    checked={deliveryMethod === "standard"}
+                    onChange={() => setDeliveryMethod("standard")}
+                    className="sr-only"
+                  />
 
                   {deliveryMethod === "standard" && (
                     <div className="absolute top-4 right-4 w-6 h-6 rounded-full bg-black text-white flex items-center justify-center">
@@ -374,17 +437,13 @@ function Checkout() {
 
                   <Truck size={24} className="mb-4" />
 
-                  <p className="font-bold">
-                    Standard Delivery
-                  </p>
+                  <p className="font-bold">Standard Delivery</p>
 
                   <p className="text-sm text-gray-500 mt-1">
                     3–5 business days
                   </p>
 
-                  <p className="font-bold mt-4">
-                    $20.00
-                  </p>
+                  <p className="font-bold mt-4">$20.00</p>
                 </label>
 
                 {/* EXPRESS DELIVERY */}
@@ -395,7 +454,14 @@ function Checkout() {
                       : "border-gray-200 hover:border-gray-400"
                   }`}
                 >
-                  <input type="radio" name="deliveryMethod" value="express" checked={deliveryMethod === "express"} onChange={() => setDeliveryMethod("express")} className="sr-only" />
+                  <input
+                    type="radio"
+                    name="deliveryMethod"
+                    value="express"
+                    checked={deliveryMethod === "express"}
+                    onChange={() => setDeliveryMethod("express")}
+                    className="sr-only"
+                  />
 
                   {deliveryMethod === "express" && (
                     <div className="absolute top-4 right-4 w-6 h-6 rounded-full bg-black text-white flex items-center justify-center">
@@ -405,17 +471,13 @@ function Checkout() {
 
                   <Truck size={24} className="mb-4" />
 
-                  <p className="font-bold">
-                    Express Delivery
-                  </p>
+                  <p className="font-bold">Express Delivery</p>
 
                   <p className="text-sm text-gray-500 mt-1">
                     1–2 business days
                   </p>
 
-                  <p className="font-bold mt-4">
-                    $35.00
-                  </p>
+                  <p className="font-bold mt-4">$35.00</p>
                 </label>
               </div>
             </div>
@@ -443,7 +505,6 @@ function Checkout() {
               </div>
 
               <div className="space-y-3">
-
                 {/* CARD PAYMENT */}
                 <label
                   className={`relative flex items-center gap-4 rounded-2xl border-2 p-4 md:p-5 cursor-pointer transition ${
@@ -452,16 +513,21 @@ function Checkout() {
                       : "border-gray-200 hover:border-gray-400"
                   }`}
                 >
-                  <input type="radio" name="paymentMethod" value="card" checked={paymentMethod === "card"} onChange={() => setPaymentMethod("card")} className="sr-only" />
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="card"
+                    checked={paymentMethod === "card"}
+                    onChange={() => setPaymentMethod("card")}
+                    className="sr-only"
+                  />
 
                   <div className="w-11 h-11 rounded-xl bg-white border border-gray-200 flex items-center justify-center shrink-0">
                     <CreditCard size={22} />
                   </div>
 
                   <div className="flex-1">
-                    <p className="font-bold">
-                      Card Payment
-                    </p>
+                    <p className="font-bold">Card Payment</p>
 
                     <p className="text-sm text-gray-500 mt-1">
                       Pay securely with your debit or credit card
@@ -487,16 +553,21 @@ function Checkout() {
                       : "border-gray-200 hover:border-gray-400"
                   }`}
                 >
-                  <input type="radio" name="paymentMethod" value="transfer" checked={paymentMethod === "transfer"} onChange={() => setPaymentMethod("transfer")} className="sr-only" />
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="transfer"
+                    checked={paymentMethod === "transfer"}
+                    onChange={() => setPaymentMethod("transfer")}
+                    className="sr-only"
+                  />
 
                   <div className="w-11 h-11 rounded-xl bg-white border border-gray-200 flex items-center justify-center shrink-0">
                     <Landmark size={22} />
                   </div>
 
                   <div className="flex-1">
-                    <p className="font-bold">
-                      Bank Transfer
-                    </p>
+                    <p className="font-bold">Bank Transfer</p>
 
                     <p className="text-sm text-gray-500 mt-1">
                       Transfer directly from your bank account
@@ -522,16 +593,21 @@ function Checkout() {
                       : "border-gray-200 hover:border-gray-400"
                   }`}
                 >
-                  <input type="radio" name="paymentMethod" value="delivery" checked={paymentMethod === "delivery"} onChange={() => setPaymentMethod("delivery")} className="sr-only" />
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="delivery"
+                    checked={paymentMethod === "delivery"}
+                    onChange={() => setPaymentMethod("delivery")}
+                    className="sr-only"
+                  />
 
                   <div className="w-11 h-11 rounded-xl bg-white border border-gray-200 flex items-center justify-center shrink-0">
                     <Banknote size={22} />
                   </div>
 
                   <div className="flex-1">
-                    <p className="font-bold">
-                      Pay on Delivery
-                    </p>
+                    <p className="font-bold">Pay on Delivery</p>
 
                     <p className="text-sm text-gray-500 mt-1">
                       Pay when your order arrives
@@ -553,20 +629,72 @@ function Checkout() {
               {/* PAYMENT MESSAGE */}
               <div className="mt-4 p-4 rounded-2xl bg-gray-50 border border-gray-100">
                 {paymentMethod === "card" && (
-                  <p className="text-sm text-gray-600">
-                    You'll complete your card payment securely after placing your order.
-                  </p>
-                )}
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h3 className="font-semibold text-gray-900">
+                        Card Details
+                      </h3>
+                      <span className="text-xs text-gray-400">
+                        Demo Preview
+                      </span>
+                    </div>
 
+                    <div>
+                      <label className="block text-sm font-medium mb-2">
+                        Card Number
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="•••• •••• •••• ••••"
+                        disabled
+                        className="w-full h-12 px-4 rounded-xl border border-gray-200 bg-gray-100 cursor-not-allowed"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium mb-2">
+                          Expiry Date
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="MM / YY"
+                          disabled
+                          className="w-full h-12 px-4 rounded-xl border border-gray-200 bg-gray-100 cursor-not-allowed"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium mb-2">
+                          CVV
+                        </label>
+                        <input
+                          type="password"
+                          placeholder="•••"
+                          disabled
+                          className="w-full h-12 px-4 rounded-xl border border-gray-200 bg-gray-100 cursor-not-allowed"
+                        />
+                      </div>
+                    </div>
+
+                    <p className="text-xs text-gray-500 leading-relaxed">
+                      Card entry is disabled in this demo. Secure card
+                      processing will be enabled when the payment gateway is
+                      integrated.
+                    </p>
+                  </div>
+                )}
                 {paymentMethod === "transfer" && (
                   <p className="text-sm text-gray-600">
-                    Bank transfer details will be provided after your order is confirmed.
+                    Bank transfer details will be provided after your order is
+                    confirmed.
                   </p>
                 )}
 
                 {paymentMethod === "delivery" && (
                   <p className="text-sm text-gray-600">
-                    You'll pay when the order is delivered to your shipping address.
+                    You'll pay when the order is delivered to your shipping
+                    address.
                   </p>
                 )}
               </div>
@@ -577,12 +705,11 @@ function Checkout() {
           <aside className="bg-white rounded-[28px] border border-gray-100 shadow-lg p-5 md:p-6 lg:sticky lg:top-28">
             <div className="flex items-start justify-between gap-4 mb-6">
               <div>
-                <h2 className="text-2xl font-bold">
-                  Order Summary
-                </h2>
+                <h2 className="text-2xl font-bold">Order Summary</h2>
 
                 <p className="text-sm text-gray-500 mt-1">
-                  {cartItems.length} {cartItems.length === 1 ? "item" : "items"} in your order
+                  {cartItems.length} {cartItems.length === 1 ? "item" : "items"}{" "}
+                  in your order
                 </p>
               </div>
 
@@ -596,7 +723,11 @@ function Checkout() {
               {cartItems.map((item) => (
                 <div key={item.id} className="flex items-center gap-4">
                   <div className="relative shrink-0">
-                    <img src={item.image} alt={item.name} className="w-20 h-20 object-cover rounded-2xl" />
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      className="w-20 h-20 object-cover rounded-2xl"
+                    />
 
                     <span className="absolute -top-2 -right-2 w-6 h-6 bg-black text-white text-xs font-semibold rounded-full flex items-center justify-center">
                       {item.quantity}
@@ -604,9 +735,7 @@ function Checkout() {
                   </div>
 
                   <div className="flex-1 min-w-0">
-                    <p className="font-semibold truncate">
-                      {item.name}
-                    </p>
+                    <p className="font-semibold truncate">{item.name}</p>
 
                     <p className="text-sm text-gray-500 capitalize mt-1">
                       {item.category}
@@ -644,25 +773,18 @@ function Checkout() {
               </div>
 
               <div className="border-t border-gray-200 pt-5 flex items-center justify-between">
-                <span className="text-lg font-bold">
-                  Total
-                </span>
+                <span className="text-lg font-bold">Total</span>
 
-                <span className="text-2xl font-bold">
-                  ${total.toFixed(2)}
-                </span>
+                <span className="text-2xl font-bold">${total.toFixed(2)}</span>
               </div>
             </div>
 
-            <button type="submit" className="w-full mt-6 py-4 rounded-2xl bg-black text-white font-semibold text-lg hover:bg-gray-800 hover:scale-[1.01] transition">
+            <button
+              type="submit"
+              className="w-full mt-6 py-4 rounded-2xl bg-black text-white font-semibold text-lg hover:bg-gray-800 hover:scale-[1.01] transition"
+            >
               Place Order
             </button>
-
-            {formStatus && (
-              <div className="mt-4 p-3 rounded-xl bg-green-50 border border-green-200 text-sm text-green-700 text-center">
-                {formStatus}
-              </div>
-            )}
 
             <div className="flex items-center justify-center gap-2 text-xs text-gray-400 mt-4">
               <ShieldCheck size={16} />
@@ -672,7 +794,7 @@ function Checkout() {
         </form>
       </div>
     </section>
-  )
+  );
 }
-
+ 
 export default Checkout
