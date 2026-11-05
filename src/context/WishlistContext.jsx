@@ -1,65 +1,68 @@
-import { createContext, useState } from "react"
+import { createContext, useState, useEffect } from "react";
 
-export const WishlistContext = createContext()
+export const WishlistContext = createContext();
 
 function WishlistProvider({ children }) {
-const [wishlist, setWishlist] = useState([])
-const [wishlistMessage, setWishlistMessage] = useState(null)
+const [wishlist, setWishlist] = useState(() => {
+  try {
+    const savedWishlist = localStorage.getItem("wishlist");
+    const parsedWishlist = savedWishlist ? JSON.parse(savedWishlist) : [];
 
-const toggleWishlist = (product) => {
-const exists = wishlist.some(
-(item) => item.id === product.id
-)
+    return Array.isArray(parsedWishlist) ? parsedWishlist : [];
+  } catch {
+    return [];
+  }
+});
 
+useEffect(() => {
+  localStorage.setItem("wishlist", JSON.stringify(wishlist));
+}, [wishlist]);
 
-if (exists) {
-  setWishlist(
-    wishlist.filter(
-      (item) => item.id !== product.id
-    )
-  )
+  const [wishlistMessage, setWishlistMessage] = useState(null);
 
-  setWishlistMessage({
-    type: "removed",
-    product: product.name,
-  })
+  const toggleWishlist = (product) => {
+    const exists = wishlist.some((item) => item.id === product.id);
 
-  return
+    if (exists) {
+      setWishlist(wishlist.filter((item) => item.id !== product.id));
+
+      setWishlistMessage({
+        type: "removed",
+        product: product.name,
+      });
+
+      return;
+    }
+
+    setWishlist([...wishlist, product]);
+
+    setWishlistMessage({
+      type: "added",
+      product: product.name,
+    });
+  };
+
+  const isWishlisted = (productId) => {
+    return wishlist.some((item) => item.id === productId);
+  };
+
+  const clearWishlistMessage = () => {
+    setWishlistMessage(null);
+  };
+
+  return (
+    <WishlistContext.Provider
+      value={{
+        wishlist,
+        toggleWishlist,
+        isWishlisted,
+        wishlistMessage,
+        clearWishlistMessage,
+      }}
+    >
+      {children}
+    </WishlistContext.Provider>
+  );
 }
 
-setWishlist([...wishlist, product])
-
-setWishlistMessage({
-  type: "added",
-  product: product.name,
-})
-
-
-}
-
-const isWishlisted = (productId) => {
-return wishlist.some(
-(item) => item.id === productId
-)
-}
-
-const clearWishlistMessage = () => {
-setWishlistMessage(null)
-}
-
-return (
-<WishlistContext.Provider
-value={{
-wishlist,
-toggleWishlist,
-isWishlisted,
-wishlistMessage,
-clearWishlistMessage,
-}}
->
-{children}
-</WishlistContext.Provider>
-)
-}
-
-export default WishlistProvider
+export default WishlistProvider;
